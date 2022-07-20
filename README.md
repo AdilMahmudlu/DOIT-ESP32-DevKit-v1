@@ -7,6 +7,6 @@ Sensors include:
 <li>HCSR04 Ultrasonic Distance Sensor</li>
 <li>DHT11 Temprature and Humidity Sensor</li>
 <li>Flame Sensor</li>
-<li>Tilt Sensor</li>
+<li>Reed Sensor</li>
 <li>Sharp GP2Y10 Dust Sensor</li>
 </ul>
