@@ -5,7 +5,7 @@ Sensors include:
 <ul>
 <li>MQ 135 Gas Sensor</li>
 <li>HCSR04 Ultrasonic Distance Sensor</li>
-<li>DHT11 Temprature and Humidity Sensor</li>
+<li>DHT11 Temperature and Humidity Sensor</li>
 <li>Flame Sensor</li>
 <li>Reed Sensor</li>
 <li>Sharp GP2Y10 Dust Sensor</li>
