@@ -7,13 +7,12 @@ long duration;
 float distanceCm;
 
 void setup() {
-  Serial.begin(115200); 
+  Serial.begin(9600);
   pinMode(trigPin, OUTPUT); 
   pinMode(echoPin, INPUT); 
 }
 
 void loop() {
-  // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);

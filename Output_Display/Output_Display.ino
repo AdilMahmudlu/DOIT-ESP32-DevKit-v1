@@ -1,4 +1,5 @@
 #include <DFRobot_DHT11.h>
+#include <MQ135.h>
 
 const int tempOut = 21;
 
@@ -11,8 +12,8 @@ int temp;
 int  hum;
 DFRobot_DHT11 DHT;
 
-int gas;
-
+int gasM;
+int gasL;
 long duration;
 float distance;
 float soundSpeed = 0.034;
@@ -40,7 +41,8 @@ void loop() {
   temp = DHT.temperature;
   hum = DHT.humidity;
   
-  gas = analogRead(gasOut);
+  gasM = (int)analogRead(gasOut)/256;
+  gasL = (int)analogRead(gasOut)%256;
   
   digitalWrite(usTrig, LOW);
   delayMicroseconds(2);
@@ -50,13 +52,14 @@ void loop() {
   duration = pulseIn(usEcho, HIGH);
   distance = duration * soundSpeed/2;
   dist_1 = (int)distance;
-  dist_2 = ((int)(distance*1000))%1000;
+  dist_2 = ((int)(distance*100))%100;
   
   if (Serial.available() > 0) {
     inByte = Serial.read();
     Serial.write(temp);
     Serial.write(hum);
-    Serial.write(gas);
+    Serial.write(gasM);
+    Serial.write(gasL);
     Serial.write(dist_1);
     Serial.write(dist_2);
   }

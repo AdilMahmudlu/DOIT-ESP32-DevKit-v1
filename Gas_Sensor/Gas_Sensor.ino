@@ -1,8 +1,8 @@
-const int outPin = 4;
+const int outPin = 15;
 float gas;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(outPin, INPUT);
 }
 

@@ -3,7 +3,7 @@ DFRobot_DHT11 DHT;
 #define DHT11_PIN 5
 
 void setup(){
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop(){
