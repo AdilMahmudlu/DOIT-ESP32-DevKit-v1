@@ -2,7 +2,7 @@ import controlP5.*;
 import processing.serial.*;
 
 Serial port;
-int[] serialArray = new int[6];
+int[] serialArray = new int[7];
 int serialCount = 0;
 
 ControlP5 cp5;
@@ -15,10 +15,10 @@ boolean firstContact = false;
 
 int temp;
 int hum;
-int gasM;
-int gasL;
-int dist_1;
-int dist_2;
+int gas;
+float dist;
+
+float distLimit = -1;
 
 void setup() {
   size(500, 600);
@@ -26,6 +26,7 @@ void setup() {
   cp5 = new ControlP5(this);
   
   font = createFont("cambria math", 20);
+  
   
   cp5.addToggle("tempSensor").setPosition(175, 100)
   .setSize(150, 120)
@@ -38,7 +39,6 @@ void setup() {
   .setColorActive(color(0, 200, 200))
   .getCaptionLabel()
   .toUpperCase(false)
-  //.align(CENTER, CENTER)
   .setPaddingX(20)
   .setPaddingY(-80);
   
@@ -59,22 +59,38 @@ void setup() {
   .setSize(150, 120)
   .setFont(font)
   .setValue(false)
-  .setCaptionLabel("Ultrasound \n Distance")
+  .setCaptionLabel("Ultrasound\n Distance")
   .setColorLabel(color(0, 20, 20))
   .setColorBackground(color(0, 100, 100))
   .setColorForeground(color(0, 150, 150))
   .setColorActive(color(0, 200, 200))
   .getCaptionLabel()
   .toUpperCase(false)
-  .align(CENTER, CENTER);
+  .setPaddingX(30)
+  .setPaddingY(-80);
   
-  cp5.addTextfield("temp")
-  .setPosition(50,125)
+  cp5.addTextfield("gas")
+  .setPosition(50,325)
   .setSize(80,30)
   .setFont(font)
   .setFocus(false)
+  .setAutoClear(false)
   .setColor(color(0,0,0))
-  .setCaptionLabel("Temperature")
+  .setCaptionLabel("Gas")
+  .setColorBackground(color(200, 255, 255))
+  .setColorLabel(color(50, 100, 100))
+  .getCaptionLabel()
+  .toUpperCase(false)
+  ;
+  
+  cp5.addTextfield("distance")
+  .setPosition(50,475)
+  .setSize(80,30)
+  .setFont(font)
+  .setFocus(false)
+  .setAutoClear(false)
+  .setColor(color(0,0,0))
+  .setCaptionLabel("Distance")
   .setColorBackground(color(200, 255, 255))
   .setColorLabel(color(50, 100, 100))
   .getCaptionLabel()
@@ -92,10 +108,16 @@ void draw() {
     text(hum, 400, 140);
   }
   if(gasSensor == true) {
-    text(gasM*256+gasL, 400, 325);
+    text(gas, 400, 325);
   }
   if(ultrasoundSensor == true) {
-    text(dist_1+dist_2/100.0, 400, 500);
+    text(dist, 400, 500);
+    
+    if (dist >= distLimit && distLimit > 0) {
+      fill(255, 0, 0);
+      circle(450, 550, 50);
+    }
+    
   }
 }
 
@@ -111,13 +133,11 @@ void serialEvent(Serial port) {
   else {
     serialArray[serialCount] = inByte;
     serialCount++;
-    if(serialCount > 5) {
+    if(serialCount > 6) {
        temp = serialArray[0];
        hum = serialArray[1];
-       gasM = serialArray[2];
-       gasL = serialArray[3];
-       dist_1 = serialArray[4];
-       dist_2 = serialArray[5];
+       gas = serialArray[2]*256 + serialArray[3];
+       dist = serialArray[4]*256 + serialArray[5] + serialArray[6]/100.0;
        port.write('A');
        serialCount = 0;
     }
@@ -126,6 +146,8 @@ void serialEvent(Serial port) {
 
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.isAssignableFrom(Textfield.class)) {
-    println(theEvent.getName() + ": " + theEvent.getStringValue());
+    if (theEvent.getName() == "distance") {
+      distLimit = float(theEvent.getStringValue());
+    }
   }
 }

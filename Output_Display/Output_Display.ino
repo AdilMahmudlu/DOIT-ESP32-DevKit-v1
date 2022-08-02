@@ -18,8 +18,9 @@ long duration;
 float distance;
 float soundSpeed = 0.034;
 
-int dist_1;
-int dist_2;
+int distM;
+int distL;
+int distD;
 
 int inByte = 0;
 
@@ -51,8 +52,9 @@ void loop() {
   digitalWrite(usTrig, LOW);
   duration = pulseIn(usEcho, HIGH);
   distance = duration * soundSpeed/2;
-  dist_1 = (int)distance;
-  dist_2 = ((int)(distance*100))%100;
+  distM = (int)distance/256;
+  distL = (int)distance%256;
+  distD = ((int)(distance*100))%100;
   
   if (Serial.available() > 0) {
     inByte = Serial.read();
@@ -60,8 +62,9 @@ void loop() {
     Serial.write(hum);
     Serial.write(gasM);
     Serial.write(gasL);
-    Serial.write(dist_1);
-    Serial.write(dist_2);
+    Serial.write(distM);
+    Serial.write(distL);
+    Serial.write(distD);
   }
 }
 

@@ -1,7 +1,7 @@
 const int outPin = 4;
 const int LED = 2;
 
-float reed;
+int reed;
 void setup() {
   Serial.begin(9600);
   pinMode(outPin, INPUT);
